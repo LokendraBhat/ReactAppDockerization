@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+  proxy:
+    image: nginx:1.22.1-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+
+  frontend:
+    image: front-app:1.0
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+    extra_hosts:
+      - "reactapp.localhost.com:127.0.0.1"
+
+  backend:
+    image: backend-app:1.0
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: 1111
+      MYSQL_DATABASE: react_task
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    volumes:
+      - ./react_data:/var/lib/mysql
+

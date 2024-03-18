@@ -3,15 +3,13 @@ const mysql = require('mysql2/promise');
 
 const app = express();
 const port = 5000;
-
 const pool = mysql.createPool({
-  host: 'mysql',
+  host: "mysql",
   port: 3306,
-  user: 'admin',
-  password: 'admin',
-  database: 'react_task'
+  user: "admin",
+  password: "admin",
+  database: "react_task"
 });
-
 
 app.get('/users', async(req, res) => {
 
@@ -19,9 +17,11 @@ app.get('/users', async(req, res) => {
   try{
    const connection = await pool.getConnection();
    const [rows]=await connection.query(sql);
-   res.send(rows); 
+   res.send(rows);  
+   connection.release(); 
   }
  catch(err){
+   console.log("ERROR OCCURED"); 
    res.send(err);
 }
 });
